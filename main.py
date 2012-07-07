@@ -18,6 +18,8 @@ size = [1024, 720]
 screen = pygame.display.set_mode(size)
 screen.set_colorkey((255,0,255))
 
+font = pygame.font.Font(None, 21)
+
 clock = pygame.time.Clock()
 # load images
 background_tile = pygame.image.load("tile.png").convert()
@@ -31,6 +33,7 @@ width=40
 height=40
 
 hit = 0
+bestscore=0
 pygame.display.set_caption("Herpderpsburdoborde:DDDDDD:D")
 iteration = 0
 bulletlist = []
@@ -82,8 +85,8 @@ while done == False:
         for y in range(19):
             screen.blit(background_tile, [x*width+marginX,(height)*y-marginY])
     
-    marginY-=1
-    if marginY==0:
+    marginY-=3
+    if marginY<=0:
         marginY=40
     
         
@@ -97,8 +100,11 @@ while done == False:
         bulletlist.append(Bullet.Bullet(random.randint(40, 720),0,0,5, [[0,40],[0,40]]))
         #bulletlist.append(Bullet.Bullet(40,40,0,5, [[10,20],[10,20]]))
     
+    
+    
     for bullet in bulletlist:
-        
+        if (bullet.x<marginX or bullet.x>700 or bullet.y<0 or bullet.y>720):
+            bulletlist.remove(bullet)
         if(player.x>bullet.x+bullet.hitbox[0][0] and player.x<bullet.x+bullet.hitbox[0][1] and player.y>bullet.y+bullet.hitbox[1][0] and player.y<bullet.y+bullet.hitbox[1][1]):
             hit = 1
         
@@ -114,6 +120,27 @@ while done == False:
         x.move()
         x.draw(screen)
     #       bulletlist.remove(x)
+    
+    # Render the text for score
+    
+    if(iteration>bestscore):
+        bestscore=iteration
+    text = font.render('Best Score'+str(bestscore), True, (white), (black))
+    
+    text1 = font.render('Current Score'+str(iteration), True, (white), (black))
+    # Create a rectangle
+    textRect = text.get_rect()
+    textRect1 = text1.get_rect()
+    # Center the rectangle
+    textRect.centerx = 900
+    textRect.centery = 200
+    textRect1.centerx = 900
+    textRect1.centery = 180
+    # Blit the text
+    screen.blit(text, textRect)
+    screen.blit(text1, textRect1)
+
+
     
     iteration += 1
     pygame.display.flip()    

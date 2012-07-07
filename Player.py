@@ -16,8 +16,8 @@ class Player:
         self.y = 200
         self.speedX = 0
         self.speedY = 0
-        self.accX = 0
-        self.accY = 0
+        #self.accX = 0
+        #self.accY = 0
     def changeplace(self,x,y):    
         self.x+=x
         self.y+=y
@@ -95,7 +95,7 @@ class Player:
         if(self.speedX>minspeed and self.speedX<0):
             self.speedX=-minspeed
         
-        maxspeed=3.1
+        maxspeed=4.2
         if(self.speedY>maxspeed):
             self.speedY=maxspeed
         if(self.speedX>maxspeed):
