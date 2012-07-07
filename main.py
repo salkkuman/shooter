@@ -3,6 +3,7 @@ import Player
 import EnemyUnit
 import Bullet
 import random
+import Ammo
 pygame.init()
 
 black = (0, 0, 0)
@@ -38,6 +39,7 @@ pygame.display.set_caption("Herpderpsburdoborde:DDDDDD:D")
 iteration = 0
 bulletlist = []
 enemylist = []
+ammolist = []
 while done == False:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -93,18 +95,47 @@ while done == False:
     #draw player and move player
     player.move()
     pygame.draw.circle(screen, red, (player.x, player.y), 10, 0)
+    #ammo
+    
+    for ammo in ammolist:
+        print(ammo.y)
+        if(not ammo.move()):
+            pygame.draw.circle(screen, red, (ammo.x, ammo.y), 2, 0)
+        else:
+            ammolist.remove(ammo)
     
     #add bullets and enemy units
     if(iteration%3==0):
+        ammolist.append(Ammo.Ammo(player.x,player.y))
         
-        bulletlist.append(Bullet.Bullet(random.randint(40, 720),0,0,5, [[0,40],[0,40]]))
+    if(iteration%10==0):
+        
+        enemylist.append(EnemyUnit.EnemyUnit(random.randint(40, 720),0,1))
+   
         #bulletlist.append(Bullet.Bullet(40,40,0,5, [[10,20],[10,20]]))
     
-    
+    for enemy in enemylist:
+        enemy.shoot(bulletlist)
+        enemy.time()
+        if(player.x>enemy.x+enemy.hitbox[0][0] and player.x<enemy.x+enemy.hitbox[0][1] and player.y>enemy.y+enemy.hitbox[1][0] and player.y<enemy.y+enemy.hitbox[1][1]):
+            hit = 1
+        
+        if (hit==1):    
+            bulletlist = []
+            enemylist = []
+            player.reset()
+            iteration = 0
+            hit=0
+            
+    #draw and move enemy unit and bullets
+    for enemy in enemylist:
+        if(enemy.move()):
+            enemylist.remove(enemy)
+        else:
+            enemy.draw(screen)
     
     for bullet in bulletlist:
-        if (bullet.x<marginX or bullet.x>700 or bullet.y<0 or bullet.y>720):
-            bulletlist.remove(bullet)
+        
         if(player.x>bullet.x+bullet.hitbox[0][0] and player.x<bullet.x+bullet.hitbox[0][1] and player.y>bullet.y+bullet.hitbox[1][0] and player.y<bullet.y+bullet.hitbox[1][1]):
             hit = 1
         
@@ -116,11 +147,32 @@ while done == False:
             hit=0
             
     #draw and move enemy unit and bullets
-    for x in bulletlist:
-        x.move()
-        x.draw(screen)
+    for bullet in bulletlist:
+        if(bullet.move()):
+            bulletlist.remove(bullet)
+        else:
+            bullet.draw(screen)
     #       bulletlist.remove(x)
     
+    for enemy in enemylist:
+        
+        if(player.x>enemy.x+enemy.hitbox[0][0] and player.x<enemy.x+enemy.hitbox[0][1] and player.y>enemy.y+enemy.hitbox[1][0] and player.y<enemy.y+enemy.hitbox[1][1]):
+            hit = 1
+        
+        if (hit==1):    
+            bulletlist = []
+            enemylist = []
+            ammolist = []
+            player.reset()
+            iteration = 0
+            hit=0
+            
+    #draw and move enemy unit and bullets
+    for enemy in enemylist:
+        if(enemy.move()):
+            enemylist.remove(enemy)
+        else:
+            enemy.draw(screen)
     # Render the text for score
     
     if(iteration>bestscore):
