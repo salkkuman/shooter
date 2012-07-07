@@ -44,7 +44,8 @@ class EnemyUnit():
     def time(self):
         self.timer+=1
     def shoot(self,bulletlist):
-        if(self.timer==self.timetoshoot):
+        
+        if(self.timer%20==0):
             
             bulletlist.append(Bullet.Bullet(self.x, self.y,1,5, [[0,40],[0,40]]))
             bulletlist.append(Bullet.Bullet(self.x, self.y,-1,5, [[0,40],[0,40]]))

@@ -11,7 +11,7 @@ class Ammo(object):
         self.speedY = -7
         
         #list of hitboxes items are in form [[x1, x2], [y1,y2]]
-        self.hitbox = [[0,0],[2,2]]
+        self.hitbox = [[0,0],[20,20]]
         
     def move(self):
         self.y += self.speedY

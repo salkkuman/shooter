@@ -11,6 +11,7 @@ white = (255, 255, 255)
 green = (0, 255, 0)
 red = (255, 0, 0)
 blue = (0, 0, 255)
+yellow = (255,255,0)
 transparent = (255, 0, 255)
 pi = 3.141592653
 done = False
@@ -40,6 +41,7 @@ iteration = 0
 bulletlist = []
 enemylist = []
 ammolist = []
+score = 0
 while done == False:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -98,17 +100,17 @@ while done == False:
     #ammo
     
     for ammo in ammolist:
-        print(ammo.y)
+        
         if(not ammo.move()):
-            pygame.draw.circle(screen, red, (ammo.x, ammo.y), 2, 0)
+            pygame.draw.circle(screen, yellow, (ammo.x, ammo.y), 2, 0)
         else:
             ammolist.remove(ammo)
     
     #add bullets and enemy units
-    if(iteration%3==0):
+    if(iteration%15==0):
         ammolist.append(Ammo.Ammo(player.x,player.y))
         
-    if(iteration%10==0):
+    if(iteration%50==0):
         
         enemylist.append(EnemyUnit.EnemyUnit(random.randint(40, 720),0,1))
    
@@ -131,9 +133,15 @@ while done == False:
     for enemy in enemylist:
         if(enemy.move()):
             enemylist.remove(enemy)
-        else:
-            enemy.draw(screen)
+        
     
+    for ammo in ammolist:
+        for enemy in enemylist:
+            if(ammo.x>enemy.x+enemy.hitbox[0][0] and ammo.x<enemy.x+enemy.hitbox[0][1] and ammo.y>enemy.y+enemy.hitbox[1][0] and ammo.y<enemy.y+enemy.hitbox[1][1]):
+                enemylist.remove(enemy)
+                score+=100
+            else:
+                enemy.draw(screen)
     for bullet in bulletlist:
         
         if(player.x>bullet.x+bullet.hitbox[0][0] and player.x<bullet.x+bullet.hitbox[0][1] and player.y>bullet.y+bullet.hitbox[1][0] and player.y<bullet.y+bullet.hitbox[1][1]):
@@ -144,6 +152,7 @@ while done == False:
             enemylist = []
             player.reset()
             iteration = 0
+            score=0
             hit=0
             
     #draw and move enemy unit and bullets
@@ -175,11 +184,11 @@ while done == False:
             enemy.draw(screen)
     # Render the text for score
     
-    if(iteration>bestscore):
-        bestscore=iteration
+    if(score>bestscore):
+        bestscore=score
     text = font.render('Best Score'+str(bestscore), True, (white), (black))
     
-    text1 = font.render('Current Score'+str(iteration), True, (white), (black))
+    text1 = font.render('Current Score'+str(score), True, (white), (black))
     # Create a rectangle
     textRect = text.get_rect()
     textRect1 = text1.get_rect()
@@ -193,7 +202,7 @@ while done == False:
     screen.blit(text1, textRect1)
 
 
-    
+    score +=1
     iteration += 1
     pygame.display.flip()    
     clock.tick(60)
