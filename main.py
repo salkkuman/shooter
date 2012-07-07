@@ -163,7 +163,7 @@ while done == False:
         
         enemylist.append(EnemyUnit.EnemyUnit(random.randint(40, 720), 0, 1))
    
-        #bulletlist.append(Bullet.Bullet(40,40,0,5, [[10,20],[10,20]]))
+        
     
     for enemy in enemylist:
         enemy.shoot(bulletlist)
@@ -177,7 +177,7 @@ while done == False:
             player.reset()
             iteration = 0
             hit = 0
-        #draw and move enemy unit and bullets
+    #draw and move enemy unit and bullets
         if(enemy.move()):
             enemylist.remove(enemy)
 
@@ -217,7 +217,7 @@ while done == False:
         
         if(player.x > enemy.x + enemy.hitbox[0][0] and player.x < enemy.x + enemy.hitbox[0][1] and player.y > enemy.y + enemy.hitbox[1][0] and player.y < enemy.y + enemy.hitbox[1][1]):
             hit = 1
-        
+    #jos osuma restart menu looppiin break ois parempi
         if (hit == 1):    
             bulletlist = []
             enemylist = []
