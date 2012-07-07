@@ -11,6 +11,13 @@ class Player:
         self.accX = 0
         self.accY = 0
     
+    def reset(self):
+        self.x = 200
+        self.y = 200
+        self.speedX = 0
+        self.speedY = 0
+        self.accX = 0
+        self.accY = 0
     def changeplace(self,x,y):    
         self.x+=x
         self.y+=y
