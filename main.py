@@ -77,28 +77,57 @@ while done == False:
     #uus inputkoodi alku
     key = pygame.key.get_pressed()
     
-    # Set the speed based on the key pressed
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_LEFT:
+    if keystate_left == False:
+        if key[pygame.K_LEFT]:
+            keystate_left = True
             player.changespeedX(-1)
-        if event.key == pygame.K_RIGHT:
+    if keystate_right == False:
+        if key[pygame.K_RIGHT]:
+            keystate_right = True
             player.changespeedX(1)
-        if event.key == pygame.K_UP:
+    if keystate_up == False:
+        if key[pygame.K_UP]:
+            keystate_up = True
             player.changespeedY(-1)
-        if event.key == pygame.K_DOWN:
+    if keystate_down == False:
+        if key[pygame.K_DOWN]:
+            keystate_down = True
             player.changespeedY(1)
-                 
-        # Reset speed when key goes up      
-    if event.type == pygame.KEYUP:
-        if event.key == pygame.K_LEFT:
-            if event.key == pygame.K_LEFT:
+
+        
+        
+    if keystate_left == True:
+        if key[pygame.K_LEFT] == False:
+            keystate_left = False
+            if key[pygame.K_RIGHT] == False:
+                player.changespeedX(0)
+            else:
                 player.changespeedX(1)
-            if event.key == pygame.K_RIGHT:
+                
+    if keystate_right == True:
+        if key[pygame.K_RIGHT] == False:
+            keystate_right = False
+            if key[pygame.K_LEFT] == False:
+                player.changespeedX(0)
+            else:
                 player.changespeedX(-1)
-            if event.key == pygame.K_UP:
-                player.changespeedY(-1)
-            if event.key == pygame.K_DOWN:
+            
+    if keystate_up == True:
+        if key[pygame.K_UP] == False:
+            keystate_up = False         
+            if key[pygame.K_DOWN] == False:
+                player.changespeedY(0)
+            else:
                 player.changespeedY(1)
+                
+                
+    if keystate_down == True:
+        if key[pygame.K_DOWN] == False:
+            keystate_down = False
+            if key[pygame.K_UP] == False:
+                player.changespeedY(0)
+            else:
+                player.changespeedY(-1)
                 
     #uus inputcode loppu
     
@@ -228,4 +257,3 @@ while done == False:
     pygame.display.flip()    
     clock.tick(60)
 pygame.quit()
-    
