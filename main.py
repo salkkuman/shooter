@@ -2,7 +2,6 @@ import pygame
 
 import Player
 import EnemyUnit
-import Bullet
 import random
 import Ammo
 pygame.init()
@@ -37,7 +36,7 @@ height = 40
 
 hit = 0
 bestscore = 0
-pygame.display.set_caption("Herpderpsburdoborde:DDDDDD:D")
+pygame.display.set_caption("Herpderpsburdoborde:DDDDDD:D by Hermanni")
 iteration = 0
 bulletlist = []
 enemylist = []

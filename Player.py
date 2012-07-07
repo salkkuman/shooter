@@ -1,5 +1,3 @@
-import pygame
-import math
 
 class Player:
     def __init__(self):
