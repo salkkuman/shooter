@@ -139,7 +139,7 @@ while done == False:
     
     #backroundArea = screen.subsurface((0,200,0,200))
     #backroundArea.fill(blue)
-    #moving backround 
+    #moving background 
     for x in range(17):
         for y in range(19):
             screen.blit(background_tile, [x * width + marginX, (height) * y - marginY])
@@ -153,14 +153,7 @@ while done == False:
     
     player.move()
     pygame.draw.circle(screen, red, (player.x, player.y), 10, 0)
-    #ammo
-    
-    for ammo in ammolist:
-        
-        if(not ammo.move()):
-            pygame.draw.circle(screen, yellow, (ammo.x, ammo.y), 2, 0)
-        else:
-            ammolist.remove(ammo)
+
     
     #add bullets and enemy units
     if(iteration % 15 == 0):
@@ -184,14 +177,15 @@ while done == False:
             player.reset()
             iteration = 0
             hit = 0
-            
-    #draw and move enemy unit and bullets
-    for enemy in enemylist:
+        #draw and move enemy unit and bullets
         if(enemy.move()):
             enemylist.remove(enemy)
-        
-    
+
     for ammo in ammolist:
+        if(not ammo.move()):
+            pygame.draw.circle(screen, yellow, (ammo.x, ammo.y), 2, 0)
+        else:
+            ammolist.remove(ammo)
         for enemy in enemylist:
             if(ammo.x > enemy.x + enemy.hitbox[0][0] and ammo.x < enemy.x + enemy.hitbox[0][1] and ammo.y > enemy.y + enemy.hitbox[1][0] and ammo.y < enemy.y + enemy.hitbox[1][1]):
                 enemylist.remove(enemy)
