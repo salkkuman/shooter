@@ -8,7 +8,7 @@ class Event(object):
         '''
         Constructor
         '''
-        self.event=0
+        self.event=1
         self.trigger=100
         self.time=0
         

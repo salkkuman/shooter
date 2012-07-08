@@ -4,7 +4,7 @@ import pygame
 
 class Bullet():
     
-    def __init__(self, x, y, speedX, speedY, hitbox):
+    def __init__(self, x, y, speedX, speedY, hitbox, type1):
         self.name = "def"
         self.x = x
         self.y = y
@@ -16,7 +16,19 @@ class Bullet():
         self.hitbox = hitbox
         self.sprite = pygame.image.load("kaitendama32.png").convert()
         self.sprite.set_colorkey((0, 100, 100))
-    
+        self.rotate_angle = 0
+        self.angle = 0
+        if(type1==1):
+            self.hitbox = hitbox
+            self.sprite = pygame.image.load("kaitendama32.png").convert()
+            self.sprite.set_colorkey((0, 100, 100))
+            self.angle = 3
+            self.rotate_angle = 32
+        if(type1==2):
+            self.hitbox = hitbox
+            self.sprite = pygame.image.load("kaitendama32.png").convert()
+            self.sprite.set_colorkey((0, 100, 100))
+            self.angle = 0
     
     
     def move(self):
@@ -40,7 +52,10 @@ class Bullet():
             return 1
         return 0
     
-    def draw(self, screen, angle):
-        screen.blit(pygame.transform.rotate(self.sprite, angle), [self.x, self.y])
+    def draw(self, screen):
+        self.angle+= self.rotate_angle #rotate nopeus
+        if self.angle >= 359:
+            self.angle = 0   
+        screen.blit(pygame.transform.rotate(self.sprite, self.angle), [self.x, self.y])
     
 

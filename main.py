@@ -1,5 +1,5 @@
 import pygame
-
+import Event
 import Player
 import EnemyUnit
 import random
@@ -36,6 +36,7 @@ width = 40
 height = 40
 
 while(1):
+    gameEvent=Event.Event()
     hit = 0
     bestscore = 0
     pygame.display.set_caption("Herpderpsburdoborde:DDDDDD:D by Hermanni")
@@ -51,9 +52,9 @@ while(1):
     speedx = 0
     speedy = 0
     mov_speed = 3 #default movement speed
-    bullet_rotate_angle = 0
-    pelievent = 1
-    eventtrigger = 100
+    
+   
+   
     while done == False:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -164,16 +165,16 @@ while(1):
         if(iteration % 15 == 0):
             ammolist.append(Ammo.Ammo(player.x, player.y))
         
-       
-        if(pelievent == 1):
+        
+        if(gameEvent.event == 1):
             if(iteration == 20):
-                eventtrigger = 1
+                gameEvent.trigger = 1
             if(iteration == 20):
                 enemylist.append(EnemyUnit.EnemyUnit(300, 0, 2))
         
-        if(pelievent == 2):
+        if(gameEvent.event == 2):
             if(iteration == 0):
-                eventtrigger = 100
+                gameEvent.trigger = 100
             if(iteration % 200 == 0):
                 enemylist.append(EnemyUnit.EnemyUnit(random.randint(40, 720), 0, 1))
        
@@ -204,7 +205,7 @@ while(1):
                 if(ammo.x > enemy.x + enemy.hitbox[0][0] and ammo.x < enemy.x + enemy.hitbox[0][1] and ammo.y > enemy.y + enemy.hitbox[1][0] and ammo.y < enemy.y + enemy.hitbox[1][1]):
                     if(enemy.hit()):
                         enemylist.remove(enemy)
-                        eventtrigger -= 1
+                        gameEvent.trigger -= 1
                     score += 100
                 else:
                     enemy.draw(screen)
@@ -223,7 +224,7 @@ while(1):
             if(bullet.move()):
                 bulletlist.remove(bullet)
             else:
-                bullet.draw(screen, bullet_rotate_angle)
+                bullet.draw(screen)
     
         
         for enemy in enemylist:
@@ -239,7 +240,7 @@ while(1):
         for enemy in enemylist:
             if(enemy.move()):
                 enemylist.remove(enemy)
-                eventtrigger -= 1
+                gameEvent.trigger -= 1
             else:
                 enemy.draw(screen)
         # Render the text for score
@@ -261,14 +262,12 @@ while(1):
         screen.blit(text, textRect)
         screen.blit(text1, textRect1)
         iteration += 1
-        if(eventtrigger == 0):
-            pelievent += 1
+        if(gameEvent.trigger == 0):
+            gameEvent.event += 1
             iteration = 0
         score += 1
         
-        bullet_rotate_angle += 36 #rotate nopeus
-        if bullet_rotate_angle >= 359:
-            bullet_rotate_angle = 0     
+          
         
         pygame.display.flip()    
         clock.tick(60)

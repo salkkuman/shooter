@@ -8,6 +8,7 @@ class Player:
         self.speedY = 0
         self.mov_speed = 3
     
+    
     def reset(self):
         self.x = 400
         self.y = 600

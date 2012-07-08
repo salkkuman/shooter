@@ -59,5 +59,5 @@ class EnemyUnit():
         
         if(self.timer%20==0):
             print
-            bulletlist.append(Bullet.Bullet(self.x+int((self.hitbox[0][1]-self.hitbox[0][0])/2), self.y+int((self.hitbox[1][1]-self.hitbox[1][0])/2),1,5, [[0,40],[0,40]]))
-            bulletlist.append(Bullet.Bullet(self.x+int((self.hitbox[0][1]-self.hitbox[0][0])/2), self.y+int((self.hitbox[1][1]-self.hitbox[1][0])/2),-1,5, [[0,40],[0,40]]))
+            bulletlist.append(Bullet.Bullet(self.x+int((self.hitbox[0][1]-self.hitbox[0][0])/2), self.y+int((self.hitbox[1][1]-self.hitbox[1][0])/2),1,5, [[0,40],[0,40]],1))
+            bulletlist.append(Bullet.Bullet(self.x+int((self.hitbox[0][1]-self.hitbox[0][0])/2), self.y+int((self.hitbox[1][1]-self.hitbox[1][0])/2),-1,5, [[0,40],[0,40]],1))
