@@ -26,8 +26,8 @@ class Bullet():
             self.rotate_angle = 32
         if(type1==2):
             self.hitbox = hitbox
-            self.sprite = pygame.image.load("kaitendama32.png").convert()
-            self.sprite.set_colorkey((0, 100, 100))
+            self.sprite = pygame.image.load("bullet2.png").convert()
+            self.sprite.set_colorkey((255, 0, 255))
             self.angle = 0
     
     
