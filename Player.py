@@ -2,15 +2,15 @@
 class Player:
     def __init__(self):
         self.name= "def"
-        self.x = 200
-        self.y = 200
+        self.x = 400
+        self.y = 600
         self.speedX = 0
         self.speedY = 0
         self.mov_speed = 3
     
     def reset(self):
-        self.x = 200
-        self.y = 200
+        self.x = 400
+        self.y = 600
         self.speedX = 0
         self.speedY = 0
     def movespeed(self,movespeed):
