@@ -29,11 +29,21 @@ class Bullet():
             self.sprite = pygame.image.load("bullet2.png").convert()
             self.sprite.set_colorkey((255, 0, 255))
             self.angle = 0
+        if(type1==3):
+            self.hitbox = hitbox
+            self.sprite = pygame.image.load("bullet3.png").convert()
+            self.sprite.set_colorkey((0,0,0))
+            self.angle = 0
+        if(type1==4):
+            self.hitbox = hitbox
+            self.sprite = pygame.image.load("pacman40.png").convert()
+            self.sprite.set_colorkey((255,255,255))
+            self.angle = 0
     
     
     def move(self):
         
-        self.x += int(self.speedX)
+        self.x += self.speedX
         if(self.x < 40):
             return 1
            
@@ -43,7 +53,7 @@ class Bullet():
             
             
             
-        self.y += int(self.speedY)
+        self.y += self.speedY
         if(self.y < 0):
             return 1
             
@@ -56,6 +66,6 @@ class Bullet():
         self.angle+= self.rotate_angle #rotate nopeus
         if self.angle >= 359:
             self.angle = 0   
-        screen.blit(pygame.transform.rotate(self.sprite, self.angle), [self.x, self.y])
+        screen.blit(pygame.transform.rotate(self.sprite, self.angle), [int(self.x), int(self.y)])
     
 

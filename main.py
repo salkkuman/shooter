@@ -165,14 +165,31 @@ while done == False:
     if(iteration % 15 == 0):
         ammolist.append(Ammo.Ammo(player.x, player.y))
     
-    
+    #saatana nousee haudasta
     if(gameEvent.event == 1):
+        if(iteration == 1):
+            gameEvent.trigger = 4
+        if(iteration == 20):
+            enemylist.append(EnemyUnit.EnemyUnit(200, 0, 3))
+        
+        if(iteration == 60):
+            enemylist.append(EnemyUnit.EnemyUnit(200, 0, 4))
+        
+        if(iteration == 100):
+            enemylist.append(EnemyUnit.EnemyUnit(200, 0, 5))
+        
+        if(iteration == 140):
+            enemylist.append(EnemyUnit.EnemyUnit(200, 0, 6))
+        
+    
+    #saatana nousee haudasta
+    if(gameEvent.event == 2):
         if(iteration == 20):
             gameEvent.trigger = 1
         if(iteration == 20):
             enemylist.append(EnemyUnit.EnemyUnit(300, 0, 2))
-    
-    if(gameEvent.event == 2):
+    #random spawnia 100 mobia
+    if(gameEvent.event == 3):
         if(iteration == 0):
             gameEvent.trigger = 100
         if(iteration % 200 == 0):
@@ -181,7 +198,7 @@ while done == False:
         
     
     for enemy in enemylist:
-        enemy.shoot(bulletlist)
+        enemy.shoot(bulletlist,player)
         enemy.time()
         if(player.x > enemy.x + enemy.hitbox[0][0] and player.x < enemy.x + enemy.hitbox[0][1] and player.y > enemy.y + enemy.hitbox[1][0] and player.y < enemy.y + enemy.hitbox[1][1]):
             hit = 1
@@ -195,7 +212,7 @@ while done == False:
     #draw and move enemy unit and bullets
         if(enemy.move()):
             enemylist.remove(enemy)
-
+            gameEvent.trigger -= 1
     for ammo in ammolist:
         if(not ammo.move()):
             pygame.draw.circle(screen, yellow, (ammo.x, ammo.y), 2, 0)
@@ -210,10 +227,13 @@ while done == False:
             else:
                 enemy.draw(screen)
     for bullet in bulletlist:
-        
+        pygame.draw.line(screen,white,[bullet.x,bullet.y],[bullet.x+bullet.speedX,bullet.y+bullet.speedY])
         if(player.x > bullet.x + bullet.hitbox[0][0] and player.x < bullet.x + bullet.hitbox[0][1] and player.y > bullet.y + bullet.hitbox[1][0] and player.y < bullet.y + bullet.hitbox[1][1]):
             hit = 1
-        
+        if(bullet.move()):
+            bulletlist.remove(bullet)
+        else:
+            bullet.draw(screen)
         if (hit == 1):    
             bulletlist = []
             enemylist = []
@@ -222,10 +242,7 @@ while done == False:
             score = 0
             hit = 0
             gameEvent.reset()
-        if(bullet.move()):
-            bulletlist.remove(bullet)
-        else:
-            bullet.draw(screen)
+        
 
     
     for enemy in enemylist:
@@ -265,6 +282,7 @@ while done == False:
     if(gameEvent.trigger == 0):
         gameEvent.event += 1
         iteration = 0
+        gameEvent.trigger=100
     score += 1
     
       
