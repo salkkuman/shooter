@@ -36,7 +36,7 @@ width = 40
 height = 40
 
 
-gameEvent=Event.Event()
+gameEvent = Event.Event()
 hit = 0
 bestscore = 0
 pygame.display.set_caption("Herpderpsburdoborde:DDDDDD:D by Hermanni")
@@ -52,13 +52,78 @@ keystate_down = False
 speedx = 0
 speedy = 0
 mov_speed = 3 #default movement speed
+menudone = False
+mainmenu = 0
+menuclock = pygame.time.Clock()
 
-
+menu0 = font.render('Start Game', True, (white), (black))
+menu1 = font.render('Extra', True, (white), (black))
+menu2 = font.render('Settings', True, (white), (black))
+menu3 = font.render('Highscore', True, (white), (black))
+menu4 = font.render('Quit', True, (white), (black))   
+menuy = 220     
 
 while done == False:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+    
+    while menudone == False:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                menudone = True
+                done = True        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_DOWN:
+                if mainmenu < 4:
+                    mainmenu += 1
+                    menuy += 20
+            if event.key == pygame.K_UP:
+                if mainmenu > 0:
+                    mainmenu -= 1
+                    menuy -= 20
+            if event.key == pygame.K_RETURN:
+                if mainmenu == 0:
+                    menudone = True
+                if mainmenu == 1:
+                    print("Extra Mode")
+                if mainmenu == 2:
+                    print("Settings")
+                if mainmenu == 3:
+                    print("Highscore");
+                if mainmenu == 4:
+                    menudone = True
+                    done = True 
+                    
+        screen.fill(black)
+        
+        pygame.draw.circle(screen, white, (460, menuy), 5, 0)
+    # Create a rectangle
+        menuRect0 = menu0.get_rect()
+        menuRect1 = menu1.get_rect()
+        menuRect2 = menu2.get_rect()
+        menuRect3 = menu3.get_rect()
+        menuRect4 = menu4.get_rect()
+    # Center the rectangle
+        menuRect4.centerx = 511
+        menuRect4.centery = 300
+        menuRect3.centerx = 511
+        menuRect3.centery = 280
+        menuRect2.centerx = 511
+        menuRect2.centery = 260
+        menuRect1.centerx = 511
+        menuRect1.centery = 240
+        menuRect0.centerx = 511
+        menuRect0.centery = 220
+    # Blit the text
+        screen.blit(menu0, menuRect0)
+        screen.blit(menu1, menuRect1)
+        screen.blit(menu2, menuRect2)            
+        screen.blit(menu3, menuRect3)
+        screen.blit(menu4, menuRect4)
+                    
+        pygame.display.flip()
+        menuclock.tick(10)
     
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_1:
@@ -79,6 +144,8 @@ while done == False:
             player.movespeed(8)
         if event.key == pygame.K_9:
             player.movespeed(9)
+        if event.key == pygame.K_ESCAPE:
+            menudone = False
     #uus inputkoodi alku
     key = pygame.key.get_pressed()
     
@@ -198,7 +265,7 @@ while done == False:
         
     
     for enemy in enemylist:
-        enemy.shoot(bulletlist,player)
+        enemy.shoot(bulletlist, player)
         enemy.time()
         if(player.x > enemy.x + enemy.hitbox[0][0] and player.x < enemy.x + enemy.hitbox[0][1] and player.y > enemy.y + enemy.hitbox[1][0] and player.y < enemy.y + enemy.hitbox[1][1]):
             hit = 1
@@ -227,7 +294,7 @@ while done == False:
             else:
                 enemy.draw(screen)
     for bullet in bulletlist:
-        pygame.draw.line(screen,white,[bullet.x,bullet.y],[bullet.x+bullet.speedX,bullet.y+bullet.speedY])
+        pygame.draw.line(screen, white, [bullet.x, bullet.y], [bullet.x + bullet.speedX, bullet.y + bullet.speedY])
         if(player.x > bullet.x + bullet.hitbox[0][0] and player.x < bullet.x + bullet.hitbox[0][1] and player.y > bullet.y + bullet.hitbox[1][0] and player.y < bullet.y + bullet.hitbox[1][1]):
             hit = 1
         if(bullet.move()):
@@ -282,7 +349,7 @@ while done == False:
     if(gameEvent.trigger == 0):
         gameEvent.event += 1
         iteration = 0
-        gameEvent.trigger=100
+        gameEvent.trigger = 100
     score += 1
     
       
