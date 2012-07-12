@@ -64,14 +64,23 @@ class Bullet():
             v2=Vector.LengthSqrd(self.speed)
             #v2*=v2
             v2*=v2
-            keskikiihtyvyys=(v2/r)-0.15
-            suunta=self.focus.__sub__(self.place)
+            #keskikiihtyvyys=(v2/r)-0.13
+            keskikiihtyvyys=(v2/r)+0.7
+            suunta=self.place.__sub__(self.focus)
             #print(suunta)
             a=Vector.Normalize(suunta)
             a.__imul__(keskikiihtyvyys)
             self.acc=a
         self.speed+=self.acc
         self.place+=self.speed
+        #tangentialize speed
+        if(self.focus!=None):
+            vector = self.focus.__sub__(self.place)
+            speed = vector
+            speed = Vector.Rotate(speed,90)
+            speed = Vector.Normalize(speed)
+            speed.__imul__(2.4)
+            self.speed=speed
         if(self.place.x < 40):
             return 1
            

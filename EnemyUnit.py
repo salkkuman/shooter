@@ -2,7 +2,7 @@ import pygame
 import Bullet
 import math
 import Vector
-import copy
+
 class EnemyUnit():
     
     def __init__(self,x,y, types):
@@ -137,17 +137,11 @@ class EnemyUnit():
                 for vector in ringCoord(8):
                     
                     speed1 = vector
-                    #print(speed)
                     placeadd = speed1.__mul__(100)
                     place = self.place+placeadd
-                    #print (placeadd)
-                    #speed = Vector.Vector(3,3)
                     speed = vector
-                    print("1")
-                    print(speed)
                     speed = Vector.Rotate(speed,90)
-                    print("2")
-                    print(speed.__imul__(2))
+                    speed.__imul__(2.4)
                     #speed = Vector.Vector(3,3)
                     newBullet = Bullet.Bullet(place,speed,self.bulletype)
                     newBullet.setFocus(self.place)
