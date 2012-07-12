@@ -136,15 +136,21 @@ class EnemyUnit():
                 
                 for vector in ringCoord(8):
                     
-                    speed = copy.copy(vector)
+                    speed1 = vector
+                    #print(speed)
+                    placeadd = speed1.__mul__(100)
+                    place = self.place+placeadd
+                    #print (placeadd)
+                    #speed = Vector.Vector(3,3)
+                    speed = vector
+                    print("1")
                     print(speed)
-                    place = speed.__mul__(100).__add__(self.place)
-                    speed = Vector.Vector(3,3)
-                    print(speed)
-                    #speed = Vector.Rotate(vector,90)
-                    #speed = Vector.Vector(0.1,0.1)
+                    speed = Vector.Rotate(speed,90)
+                    print("2")
+                    print(speed.__imul__(2))
+                    #speed = Vector.Vector(3,3)
                     newBullet = Bullet.Bullet(place,speed,self.bulletype)
-                    newBullet.setFocus(copy.copy(self.place))
+                    newBullet.setFocus(self.place)
                     bulletlist.append(newBullet)
         
         #hakeutuvia bullettei

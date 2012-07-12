@@ -2,13 +2,13 @@
 import pygame
 import math
 import Vector
-import copy
+
 class Bullet():
     
     def __init__(self, place, speed, type1):
         self.name = "def"
-        self.place = copy.copy(place)
-        self.speed = copy.copy(speed)
+        self.place = place
+        self.speed = speed
         
         self.acc = Vector.Vector(0,0)
         #list of hitboxes items are in form [[x1, x2], [y1,y2]]
@@ -62,10 +62,11 @@ class Bullet():
             #v^2/r
             r=Vector.Distance(self.place, self.focus)
             v2=Vector.LengthSqrd(self.speed)
+            #v2*=v2
             v2*=v2
-            keskikiihtyvyys=r/v2
+            keskikiihtyvyys=(v2/r)-0.15
             suunta=self.focus.__sub__(self.place)
-            print(suunta)
+            #print(suunta)
             a=Vector.Normalize(suunta)
             a.__imul__(keskikiihtyvyys)
             self.acc=a

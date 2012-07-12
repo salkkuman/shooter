@@ -86,6 +86,6 @@ def ProjectOnto( w,v ):
     'Projects w onto v.'
     return v * Dot(w,v) / LengthSqrd(v)
 def Rotate(vec, angle):
-    x=math.cos(angle*math.pi/180)+math.sin(angle*math.pi/180)
-    y=math.cos(angle*math.pi/180)-math.sin(angle*math.pi/180)
+    x=vec[0]*math.cos(angle*math.pi/180)-vec[1]*math.sin(angle*math.pi/180)
+    y=vec[1]*math.cos(angle*math.pi/180)+vec[0]*math.sin(angle*math.pi/180)
     return Vector(x,y)
