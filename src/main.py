@@ -37,6 +37,7 @@ screen.set_colorkey(transparent)
 font = pygame.font.Font(None, 21)
 
 clock = pygame.time.Clock()
+
 # load images
 background_tile = pygame.image.load("../kuvat/tile.png").convert()
 
@@ -373,17 +374,23 @@ while done == False:
     text = font.render('Best Score' + str(bestscore), True, (white), (black))
     
     text1 = font.render('Current Score' + str(score), True, (white), (black))
+    fps = int(clock.get_fps())
+    text2 = font.render('FPS:' + str(fps), True, (white), (black))
     # Create a rectangle
     textRect = text.get_rect()
     textRect1 = text1.get_rect()
+    textRect2 = text2.get_rect()
     # Center the rectangle
     textRect.centerx = 900
     textRect.centery = 200
     textRect1.centerx = 900
     textRect1.centery = 180
+    textRect2.centerx = 900
+    textRect2.centery = 160
     # Blit the text
     screen.blit(text, textRect)
     screen.blit(text1, textRect1)
+    screen.blit(text2, textRect2)
     iteration += 1
     if(gameEvent.trigger == 0):
         gameEvent.event += 1
@@ -392,6 +399,7 @@ while done == False:
     score += 1
     
       
+    
     
     pygame.display.flip()    
     clock.tick(60)
