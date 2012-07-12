@@ -284,7 +284,7 @@ while done == False:
             gameEvent.trigger -= 1
     for ammo in ammolist:
         
-        if(ammo.move()):
+        if(not ammo.move()):
             pygame.draw.circle(screen, yellow, (ammo.x, ammo.y), 2, 0)
         else:
             ammolist.remove(ammo)
@@ -296,6 +296,7 @@ while done == False:
                 score += 100
             else:
                 enemy.draw(screen)
+
     for bullet in bulletlist:
         pygame.draw.line(screen, white, [bullet.x, bullet.y], [bullet.x + bullet.speedX, bullet.y + bullet.speedY])
         if(player.x > bullet.x + bullet.hitbox[0][0] and player.x < bullet.x + bullet.hitbox[0][1] and player.y > bullet.y + bullet.hitbox[1][0] and player.y < bullet.y + bullet.hitbox[1][1]):
@@ -315,8 +316,7 @@ while done == False:
             score = 0
             hit = 0
             gameEvent.reset()
-        
-
+    
     
     for enemy in enemylist:
         
