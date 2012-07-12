@@ -78,10 +78,14 @@ def Normalize( vec ):
     'Returns a new vector that has the same direction as vec, but has a length of one.'
     if( vec[0] == 0. and vec[1] == 0. ):
         return Vector(0.,0.)
-    return vec / Length(vec)
+    return vec.__div__(Length(vec))
 def Dot( a,b ):
     'Computes the dot product of a and b'
     return a[0]*b[0] + a[1]*b[1]
 def ProjectOnto( w,v ):
     'Projects w onto v.'
     return v * Dot(w,v) / LengthSqrd(v)
+def Rotate(vec, angle):
+    x=math.cos(angle*math.pi/180)+math.sin(angle*math.pi/180)
+    y=math.cos(angle*math.pi/180)-math.sin(angle*math.pi/180)
+    return Vector(x,y)

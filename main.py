@@ -249,7 +249,7 @@ while done == False:
         if(iteration == 20):
             gameEvent.trigger = 1
         if(iteration == 20):
-            enemylist.append(EnemyUnit.EnemyUnit(300, 0, 7))
+            enemylist.append(EnemyUnit.EnemyUnit(300, 300, 7))
     
      #saatana nousee haudasta
     if(gameEvent.event == 2):
@@ -310,7 +310,9 @@ while done == False:
             ammolist.remove(ammo)
         for enemy in enemylist:
             if(collision(ammo,enemy)):
+                
                 if(enemy.hit()):
+                    
                     enemylist.remove(enemy)
                     gameEvent.trigger -= 1
                 score += 100

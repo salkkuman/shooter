@@ -32,20 +32,22 @@ class EnemyUnit():
             self.timetoshoot = 0
             self.bulletype=3
         if(types==2):
+            self.hitboxd=60
             self.speedY = 0
             self.hitbox=[10,120],[0,140]
             self.sprite = pygame.image.load("paivi150.png").convert()
             self.sprite.set_colorkey((255,0,255))
             self.timetoshoot = 0
-            self.hp = 200
+            self.hp = 10
             self.bulletype=5
         if(types==7):
+            self.hitboxd=60
             self.speedY = 0
             self.hitbox=[10,120],[0,140]
             self.sprite = pygame.image.load("paivi150.png").convert()
             self.sprite.set_colorkey((255,0,255))
             self.timetoshoot = 0
-            self.hp = 200
+            self.hp = 10
             self.bulletype=3
         if(types==3):
             self.speedY = 0
@@ -84,6 +86,7 @@ class EnemyUnit():
             self.hp = 2
             self.bulletype=4
     def hit(self):
+        
         self.hp-=1
         if (self.hp == 0):
             return 1
@@ -134,10 +137,15 @@ class EnemyUnit():
                 for vector in ringCoord(8):
                     
                     speed = copy.copy(vector)
-                    place = speed.__mul__(10).__add__(self.place)
-                    
-                    
-                    bulletlist.append(Bullet.Bullet(place,speed,self.bulletype))
+                    print(speed)
+                    place = speed.__mul__(100).__add__(self.place)
+                    speed = Vector.Vector(3,3)
+                    print(speed)
+                    #speed = Vector.Rotate(vector,90)
+                    #speed = Vector.Vector(0.1,0.1)
+                    newBullet = Bullet.Bullet(place,speed,self.bulletype)
+                    newBullet.setFocus(copy.copy(self.place))
+                    bulletlist.append(newBullet)
         
         #hakeutuvia bullettei
         if(self.type==3 or self.type==4 or self.type==5 or self.type==6 ):

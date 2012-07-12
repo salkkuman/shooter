@@ -10,8 +10,7 @@ class Bullet():
         self.place = copy.copy(place)
         self.speed = copy.copy(speed)
         
-        self.accX = 0
-        self.accY = 0
+        self.acc = Vector.Vector(0,0)
         #list of hitboxes items are in form [[x1, x2], [y1,y2]]
         self.hitboxd=10
         self.hitbox = [[0,0],[20,20]]
@@ -24,6 +23,7 @@ class Bullet():
         self.bullettype = 0
         #if 1 goes to player way
         self.targeting = 0
+        self.focus = None
         
         if(type1==1):
             
@@ -33,9 +33,11 @@ class Bullet():
             self.rotate_angle = 32
         if(type1==2):
             
+            #ympyra ratainen
             self.sprite = pygame.image.load("bullet2.png").convert()
             self.sprite.set_colorkey((255, 0, 255))
             self.angle = 0
+            
         if(type1==3):
             
             self.sprite = pygame.image.load("bullet3.png").convert()
@@ -56,9 +58,19 @@ class Bullet():
             self.targeting = 1
     
     def move(self):
-        
-        self.place.__iadd__(self.speed)
-        
+        if(self.focus!=None):
+            #v^2/r
+            r=Vector.Distance(self.place, self.focus)
+            v2=Vector.LengthSqrd(self.speed)
+            v2*=v2
+            keskikiihtyvyys=r/v2
+            suunta=self.focus.__sub__(self.place)
+            print(suunta)
+            a=Vector.Normalize(suunta)
+            a.__imul__(keskikiihtyvyys)
+            self.acc=a
+        self.speed+=self.acc
+        self.place+=self.speed
         if(self.place.x < 40):
             return 1
            
@@ -81,7 +93,8 @@ class Bullet():
             return 2
             
         return 0
-    
+    def setFocus(self, vectr):
+        self.focus = vectr
     def draw(self, screen):
         self.angle+= self.rotate_angle #rotate nopeus
         if self.angle >= 359:
