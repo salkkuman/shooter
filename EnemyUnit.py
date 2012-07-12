@@ -8,14 +8,8 @@ class EnemyUnit():
     def __init__(self,x,y, types):
         self.name= "def"
         self.place = Vector.Vector(x,y)
-        self.place.x = x
-        self.place.y = y
-        self.place.x0 = x
-        self.place.y0 = y
-        self.speedX = 0
-        self.speedY = 0
-        self.accX = 0
-        self.accY = 0
+        self.speed =Vector.Vector(0,0)
+
         #list of hitboxes items are in form [xcoordinate, ycoordinate]
         self.hitbox = []
         self.hitboxd=10
@@ -25,7 +19,7 @@ class EnemyUnit():
         self.bulletype =1
         self.type=types
         if(types==1):
-            self.speedY = 1
+            self.speed.y = 1
             self.hitbox=[0,40],[0,40]
             self.sprite = pygame.image.load("enemy.png").convert()
             self.sprite.set_colorkey((255,0,255))
@@ -33,7 +27,7 @@ class EnemyUnit():
             self.bulletype=3
         if(types==2):
             self.hitboxd=60
-            self.speedY = 0
+            self.speed.y = 0
             self.hitbox=[10,120],[0,140]
             self.sprite = pygame.image.load("paivi150.png").convert()
             self.sprite.set_colorkey((255,0,255))
@@ -42,7 +36,7 @@ class EnemyUnit():
             self.bulletype=5
         if(types==7):
             self.hitboxd=60
-            self.speedY = 0
+            self.speed.y = 0
             self.hitbox=[10,120],[0,140]
             self.sprite = pygame.image.load("paivi150.png").convert()
             self.sprite.set_colorkey((255,0,255))
@@ -50,8 +44,8 @@ class EnemyUnit():
             self.hp = 10
             self.bulletype=3
         if(types==3):
-            self.speedY = 0
-            self.speedX = 1
+
+            self.speed.__iadd__((0,1))
             self.hitbox=[0,50],[0,50]
             self.sprite = pygame.image.load("pacman_ghost1.png").convert()
             self.sprite.set_colorkey((0,0,0))
@@ -59,8 +53,7 @@ class EnemyUnit():
             self.hp = 2
             self.bulletype=4
         if(types==4):
-            self.speedY = 0
-            self.speedX = 1
+
             self.hitbox=[0,50],[0,50]
             self.sprite = pygame.image.load("pacman_ghost2.png").convert()
             self.sprite.set_colorkey((0,0,0))
@@ -68,8 +61,7 @@ class EnemyUnit():
             self.hp = 2
             self.bulletype=4
         if(types==5):
-            self.speedY = 0
-            self.speedX = 1
+
             self.hitbox=[0,50],[0,50]
             self.sprite = pygame.image.load("pacman_ghost3.png").convert()
             self.sprite.set_colorkey((0,0,0))
@@ -77,8 +69,7 @@ class EnemyUnit():
             self.hp = 2
             self.bulletype=4
         if(types==6):
-            self.speedY = 0
-            self.speedX = 1
+
             self.hitbox=[0,50],[0,50]
             self.sprite = pygame.image.load("pacman_ghost4.png").convert()
             self.sprite.set_colorkey((0,0,0))
@@ -98,26 +89,26 @@ class EnemyUnit():
         if(self.type==3 or self.type==4 or self.type==5 or self.type==6 ):
             datime=150
             if(self.timer%datime==0):
-                self.speedY=0
-                self.speedX=2
+                self.speed.y=0
+                self.speed.x=2
             if(self.timer%datime==int(datime/4)):
-                self.speedY=2
-                self.speedX=0
+                self.speed.y=2
+                self.speed.x=0
             if(self.timer%datime==int(datime/2)):
-                self.speedY=0
-                self.speedX=-2
+                self.speed.y=0
+                self.speed.x=-2
             if(self.timer%datime==int(datime*3/4)):
-                self.speedY=2
-                self.speedX=0
+                self.speed.y=2
+                self.speed.x=0
         
-        self.place.x+=self.speedX
+        self.place.x+=self.speed.x
         if(self.place.x<40):
             return 1
            
         if(self.place.x>720):
             return 1   
             
-        self.place.y+=self.speedY
+        self.place.y+=self.speed.y
         if(self.place.y<0):
             return 1
             
@@ -148,6 +139,7 @@ class EnemyUnit():
                     bulletlist.append(newBullet)
         
         #hakeutuvia bullettei
+        ""
         if(self.type==3 or self.type==4 or self.type==5 or self.type==6 ):
             if(self.timer%20==0):
                 speedx1=player.place.x-self.place.x-25
@@ -155,11 +147,13 @@ class EnemyUnit():
                 speedx=7*speedx1/(math.sqrt(speedx1*speedx1+speedy1*speedy1))
                 speedy=7*speedy1/(math.sqrt(speedx1*speedx1+speedy1*speedy1))
                 speed = Vector.Vector(speedx, speedy)
-                bulletlist.append(Bullet.Bullet(self.place, speed,self.bulletype))
+                place=self.place.__add__((0,0))
+                bulletlist.append(Bullet.Bullet(place, speed,self.bulletype))
         if(self.type==1 or self.type==2):
                 if(self.timer%20==0):
                     speed = Vector.Vector(2,5)
-                    bulletlist.append(Bullet.Bullet(self.place, speed,self.bulletype))
+                    place=self.place.__add__((0,0))
+                    bulletlist.append(Bullet.Bullet(place, speed,self.bulletype))
                 
                 
 def ringCoord(count):
