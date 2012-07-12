@@ -10,7 +10,7 @@ class Player:
         self.speedY = 0
         self.mov_speed = 3
         self.hitboxd=3
-        self.hitbox=[]
+        self.hitbox=[[0,0],[3,3]]
     
     
     def reset(self):

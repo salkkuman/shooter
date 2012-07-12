@@ -2,6 +2,7 @@ import pygame
 import Bullet
 import math
 import Vector
+import copy
 class EnemyUnit():
     
     def __init__(self,x,y, types):
@@ -17,7 +18,7 @@ class EnemyUnit():
         self.accY = 0
         #list of hitboxes items are in form [xcoordinate, ycoordinate]
         self.hitbox = []
-        self.hitboxd=1
+        self.hitboxd=10
         self.timer = 0
         self.timetoshoot = 0
         self.hp = 1
@@ -38,6 +39,14 @@ class EnemyUnit():
             self.timetoshoot = 0
             self.hp = 200
             self.bulletype=5
+        if(types==7):
+            self.speedY = 0
+            self.hitbox=[10,120],[0,140]
+            self.sprite = pygame.image.load("paivi150.png").convert()
+            self.sprite.set_colorkey((255,0,255))
+            self.timetoshoot = 0
+            self.hp = 200
+            self.bulletype=3
         if(types==3):
             self.speedY = 0
             self.speedX = 1
@@ -115,7 +124,21 @@ class EnemyUnit():
     
     def time(self):
         self.timer+=1
+    
+    
+            
     def shoot(self,bulletlist,player):
+        if(self.type==7):
+            if(self.timer%20==0):
+                
+                for vector in ringCoord(8):
+                    
+                    speed = copy.copy(vector)
+                    place = speed.__mul__(10).__add__(self.place)
+                    
+                    
+                    bulletlist.append(Bullet.Bullet(place,speed,self.bulletype))
+        
         #hakeutuvia bullettei
         if(self.type==3 or self.type==4 or self.type==5 or self.type==6 ):
             if(self.timer%20==0):
@@ -123,10 +146,19 @@ class EnemyUnit():
                 speedy1=player.place.y-self.place.y-25
                 speedx=7*speedx1/(math.sqrt(speedx1*speedx1+speedy1*speedy1))
                 speedy=7*speedy1/(math.sqrt(speedx1*speedx1+speedy1*speedy1))
+                speed = Vector.Vector(speedx, speedy)
+                bulletlist.append(Bullet.Bullet(self.place, speed,self.bulletype))
+        if(self.type==1 or self.type==2):
+                if(self.timer%20==0):
+                    speed = Vector.Vector(2,5)
+                    bulletlist.append(Bullet.Bullet(self.place, speed,self.bulletype))
+                
+                
+def ringCoord(count):
+        coordList = []
+       
+        for i in range(count):
+            coordList.append(Vector.AngleVector(i*360/count))   
             
-                bulletlist.append(Bullet.Bullet(self.place.x+(self.hitbox[0][1]-self.hitbox[0][0])/2, self.place.y,speedx,speedy, [[0,40],[0,40]],self.bulletype))
-        else:
-            if(self.timer%20==0):
-           
-                bulletlist.append(Bullet.Bullet(self.place.x+((self.hitbox[0][1]-self.hitbox[0][0])/2), self.place.y,1,5, [[0,40],[0,40]],self.bulletype))
-                bulletlist.append(Bullet.Bullet(self.place.x+((self.hitbox[0][1]-self.hitbox[0][0])/2), self.place.y,-1,5, [[0,40],[0,40]],self.bulletype))
+        return coordList      
+                 

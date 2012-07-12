@@ -7,6 +7,14 @@ import Ammo
 import Vector
 def collision(item1,item2):
     hitrange=item1.hitboxd+item2.hitboxd
+    distance=Vector.Distance(item1.place, item2.place)
+    if(distance-hitrange<0):
+        return 1
+    for hitbox in item1.hitbox:
+        for hitbox in item2.hitbox:
+            1==1
+    return 0
+    
     
 pygame.init()
 
@@ -234,17 +242,24 @@ while done == False:
     
     #add bullets and enemy units
     if(iteration % 15 == 0):
-        ammolist.append(Ammo.Ammo(int(player.place.x), int(player.place.y)))
+        ammolist.append(Ammo.Ammo(player.place))
+    
+    #saatana nousee 
+    if(gameEvent.event == 1):
+        if(iteration == 20):
+            gameEvent.trigger = 1
+        if(iteration == 20):
+            enemylist.append(EnemyUnit.EnemyUnit(300, 0, 7))
     
      #saatana nousee haudasta
-    if(gameEvent.event == 1):
+    if(gameEvent.event == 2):
         if(iteration == 20):
             gameEvent.trigger = 1
         if(iteration == 20):
             enemylist.append(EnemyUnit.EnemyUnit(300, 0, 2))
     
     #4 pacman ghostia
-    if(gameEvent.event == 2):
+    if(gameEvent.event == 3):
         if(iteration == 1):
             gameEvent.trigger = 4
         if(iteration == 20):
@@ -262,7 +277,7 @@ while done == False:
     
   
     #random spawnia 100 mobia
-    if(gameEvent.event == 3):
+    if(gameEvent.event == 4):
         if(iteration == 0):
             gameEvent.trigger = 100
         if(iteration % 200 == 0):
@@ -273,7 +288,7 @@ while done == False:
     for enemy in enemylist:
         enemy.shoot(bulletlist, player)
         enemy.time()
-        if(player.place.x > enemy.place.x + enemy.hitbox[0][0] and player.place.x < enemy.place.x + enemy.hitbox[0][1] and player.place.y > enemy.place.y + enemy.hitbox[1][0] and player.place.y < enemy.place.y + enemy.hitbox[1][1]):
+        if(collision(player,enemy)):
             hit = 1
         
         if (hit == 1):    
@@ -282,6 +297,7 @@ while done == False:
             player.reset()
             iteration = 0
             hit = 0
+            gameEvent.reset()
     #draw and move enemy unit and bullets
         if(enemy.move()):
             enemylist.remove(enemy)
@@ -293,7 +309,7 @@ while done == False:
         else:
             ammolist.remove(ammo)
         for enemy in enemylist:
-            if(ammo.place.x > enemy.place.x + enemy.hitbox[0][0] and ammo.place.x < enemy.place.x + enemy.hitbox[0][1] and ammo.place.y > enemy.place.y + enemy.hitbox[1][0] and ammo.place.y < enemy.place.y + enemy.hitbox[1][1]):
+            if(collision(ammo,enemy)):
                 if(enemy.hit()):
                     enemylist.remove(enemy)
                     gameEvent.trigger -= 1
@@ -302,8 +318,8 @@ while done == False:
                 enemy.draw(screen)
 
     for bullet in bulletlist:
-        pygame.draw.line(screen, white, [bullet.place.x, bullet.place.y], [bullet.place.x + bullet.speedX, bullet.place.y + bullet.speedY])
-        if(player.place.x > bullet.place.x + bullet.hitbox[0][0] and player.place.x < bullet.place.x + bullet.hitbox[0][1] and player.place.y > bullet.place.y + bullet.hitbox[1][0] and player.place.y < bullet.place.y + bullet.hitbox[1][1]):
+        pygame.draw.line(screen, white, [bullet.place.x, bullet.place.y], [bullet.place.x + bullet.speed.x, bullet.place.y + bullet.speed.y])
+        if(collision(player,bullet)):
             hit = 1
         moved=bullet.move()
         if(moved):
@@ -324,8 +340,17 @@ while done == False:
     
     for enemy in enemylist:
         
-        if(player.place.x > enemy.place.x + enemy.hitbox[0][0] and player.place.x < enemy.place.x + enemy.hitbox[0][1] and player.place.y > enemy.place.y + enemy.hitbox[1][0] and player.place.y < enemy.place.y + enemy.hitbox[1][1]):
+        if(collision(player,enemy)):
             hit = 1
+        if (hit == 1):    
+            bulletlist = []
+            enemylist = []
+            player.reset()
+            iteration = 0
+            score = 0
+            hit = 0
+            gameEvent.reset()
+            break
     #jos osuma restart menu looppiin break ois parempi
     
     
