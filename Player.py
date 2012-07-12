@@ -1,19 +1,24 @@
+import Vector
 
 class Player:
     def __init__(self):
         self.name= "def"
-        self.x = 400
-        self.y = 600
+        self.place = Vector.Vector(400,600)
+        
+        
         self.speedX = 0
         self.speedY = 0
         self.mov_speed = 3
+        self.hitboxd=3
+        self.hitbox=[]
     
     
     def reset(self):
-        self.x = 400
-        self.y = 600
+        self.place = Vector.Vector(400,600)
         self.speedX = 0
         self.speedY = 0
+        self.mov_speed = 3
+        
     def movespeed(self,movespeed):
         self.mov_speed = movespeed
 
@@ -32,19 +37,21 @@ class Player:
     def move(self):
         x = self.speedX * self.mov_speed
         y = self.speedY * self.mov_speed
-        self.x+=x
-        if(self.x<40):
-            self.x=40
+        change = Vector.Vector(x,y)
+        self.place += change
+       
+        if(self.place.x<40):
+            self.place.x=40
             
-        if(self.x>720):
-            self.x=720
+        if(self.place.x>720):
+            self.place.x=720
             
-        self.y+=y
-        if(self.y<0):
-            self.y=0
+        
+        if(self.place.y<0):
+            self.place.y=0
             
-        if(self.y>720):
-            self.y=720
+        if(self.place.y>720):
+            self.place.y=720
            
         
         

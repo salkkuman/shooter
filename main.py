@@ -4,6 +4,10 @@ import Player
 import EnemyUnit
 import random
 import Ammo
+import Vector
+def collision(item1,item2):
+    hitrange=item1.hitboxd+item2.hitboxd
+    
 pygame.init()
 
 black = (0, 0, 0)
@@ -224,13 +228,13 @@ while done == False:
     #draw player and move player
     
     player.move()
-    screen.blit(alus, [player.x - 35, player.y - 70])
-    pygame.draw.circle(screen, red, (player.x, player.y), 7, 0)
+    screen.blit(alus, [player.place.x - 35, player.place.y - 70])
+    pygame.draw.circle(screen, red, (int(player.place.x), int(player.place.y)), 7, 0)
 
     
     #add bullets and enemy units
     if(iteration % 15 == 0):
-        ammolist.append(Ammo.Ammo(player.x, player.y))
+        ammolist.append(Ammo.Ammo(int(player.place.x), int(player.place.y)))
     
      #saatana nousee haudasta
     if(gameEvent.event == 1):
@@ -269,7 +273,7 @@ while done == False:
     for enemy in enemylist:
         enemy.shoot(bulletlist, player)
         enemy.time()
-        if(player.x > enemy.x + enemy.hitbox[0][0] and player.x < enemy.x + enemy.hitbox[0][1] and player.y > enemy.y + enemy.hitbox[1][0] and player.y < enemy.y + enemy.hitbox[1][1]):
+        if(player.place.x > enemy.place.x + enemy.hitbox[0][0] and player.place.x < enemy.place.x + enemy.hitbox[0][1] and player.place.y > enemy.place.y + enemy.hitbox[1][0] and player.place.y < enemy.place.y + enemy.hitbox[1][1]):
             hit = 1
         
         if (hit == 1):    
@@ -285,11 +289,11 @@ while done == False:
     for ammo in ammolist:
         
         if(not ammo.move()):
-            pygame.draw.circle(screen, yellow, (ammo.x, ammo.y), 2, 0)
+            pygame.draw.circle(screen, yellow, (int(ammo.place.x), int(ammo.place.y)), 2, 0)
         else:
             ammolist.remove(ammo)
         for enemy in enemylist:
-            if(ammo.x > enemy.x + enemy.hitbox[0][0] and ammo.x < enemy.x + enemy.hitbox[0][1] and ammo.y > enemy.y + enemy.hitbox[1][0] and ammo.y < enemy.y + enemy.hitbox[1][1]):
+            if(ammo.place.x > enemy.place.x + enemy.hitbox[0][0] and ammo.place.x < enemy.place.x + enemy.hitbox[0][1] and ammo.place.y > enemy.place.y + enemy.hitbox[1][0] and ammo.place.y < enemy.place.y + enemy.hitbox[1][1]):
                 if(enemy.hit()):
                     enemylist.remove(enemy)
                     gameEvent.trigger -= 1
@@ -298,8 +302,8 @@ while done == False:
                 enemy.draw(screen)
 
     for bullet in bulletlist:
-        pygame.draw.line(screen, white, [bullet.x, bullet.y], [bullet.x + bullet.speedX, bullet.y + bullet.speedY])
-        if(player.x > bullet.x + bullet.hitbox[0][0] and player.x < bullet.x + bullet.hitbox[0][1] and player.y > bullet.y + bullet.hitbox[1][0] and player.y < bullet.y + bullet.hitbox[1][1]):
+        pygame.draw.line(screen, white, [bullet.place.x, bullet.place.y], [bullet.place.x + bullet.speedX, bullet.place.y + bullet.speedY])
+        if(player.place.x > bullet.place.x + bullet.hitbox[0][0] and player.place.x < bullet.place.x + bullet.hitbox[0][1] and player.place.y > bullet.place.y + bullet.hitbox[1][0] and player.place.y < bullet.place.y + bullet.hitbox[1][1]):
             hit = 1
         moved=bullet.move()
         if(moved):
@@ -320,7 +324,7 @@ while done == False:
     
     for enemy in enemylist:
         
-        if(player.x > enemy.x + enemy.hitbox[0][0] and player.x < enemy.x + enemy.hitbox[0][1] and player.y > enemy.y + enemy.hitbox[1][0] and player.y < enemy.y + enemy.hitbox[1][1]):
+        if(player.place.x > enemy.place.x + enemy.hitbox[0][0] and player.place.x < enemy.place.x + enemy.hitbox[0][1] and player.place.y > enemy.place.y + enemy.hitbox[1][0] and player.place.y < enemy.place.y + enemy.hitbox[1][1]):
             hit = 1
     #jos osuma restart menu looppiin break ois parempi
     
