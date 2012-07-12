@@ -52,7 +52,7 @@ keystate_down = False
 speedx = 0
 speedy = 0
 mov_speed = 3 #default movement speed
-menudone = False
+menudone = True
 mainmenu = 0
 menuclock = pygame.time.Clock()
 
@@ -232,8 +232,15 @@ while done == False:
     if(iteration % 15 == 0):
         ammolist.append(Ammo.Ammo(player.x, player.y))
     
-    #saatana nousee haudasta
+     #saatana nousee haudasta
     if(gameEvent.event == 1):
+        if(iteration == 20):
+            gameEvent.trigger = 1
+        if(iteration == 20):
+            enemylist.append(EnemyUnit.EnemyUnit(300, 0, 2))
+    
+    #4 pacman ghostia
+    if(gameEvent.event == 2):
         if(iteration == 1):
             gameEvent.trigger = 4
         if(iteration == 20):
@@ -249,12 +256,7 @@ while done == False:
             enemylist.append(EnemyUnit.EnemyUnit(200, 0, 6))
         
     
-    #saatana nousee haudasta
-    if(gameEvent.event == 2):
-        if(iteration == 20):
-            gameEvent.trigger = 1
-        if(iteration == 20):
-            enemylist.append(EnemyUnit.EnemyUnit(300, 0, 2))
+  
     #random spawnia 100 mobia
     if(gameEvent.event == 3):
         if(iteration == 0):
@@ -281,7 +283,8 @@ while done == False:
             enemylist.remove(enemy)
             gameEvent.trigger -= 1
     for ammo in ammolist:
-        if(not ammo.move()):
+        
+        if(ammo.move()):
             pygame.draw.circle(screen, yellow, (ammo.x, ammo.y), 2, 0)
         else:
             ammolist.remove(ammo)
@@ -297,7 +300,10 @@ while done == False:
         pygame.draw.line(screen, white, [bullet.x, bullet.y], [bullet.x + bullet.speedX, bullet.y + bullet.speedY])
         if(player.x > bullet.x + bullet.hitbox[0][0] and player.x < bullet.x + bullet.hitbox[0][1] and player.y > bullet.y + bullet.hitbox[1][0] and player.y < bullet.y + bullet.hitbox[1][1]):
             hit = 1
-        if(bullet.move()):
+        moved=bullet.move()
+        if(moved):
+            if(moved==2):
+                bullet.shoot(bulletlist, player)
             bulletlist.remove(bullet)
         else:
             bullet.draw(screen)
@@ -357,4 +363,3 @@ while done == False:
     pygame.display.flip()    
     clock.tick(60)
 pygame.quit()
-

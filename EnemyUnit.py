@@ -34,7 +34,7 @@ class EnemyUnit():
             self.sprite.set_colorkey((255,0,255))
             self.timetoshoot = 0
             self.hp = 200
-            self.bulletype=2
+            self.bulletype=5
         if(types==3):
             self.speedY = 0
             self.speedX = 1

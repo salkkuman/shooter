@@ -1,6 +1,6 @@
 
 import pygame
-
+import math
 
 class Bullet():
     
@@ -18,6 +18,10 @@ class Bullet():
         self.sprite.set_colorkey((0, 100, 100))
         self.rotate_angle = 0
         self.angle = 0
+        self.time = 0
+        self.timeout = -1
+        self.bullettype = 0
+        self.targeting = 0
         if(type1==1):
             self.hitbox = hitbox
             self.sprite = pygame.image.load("kaitendama32.png").convert()
@@ -39,7 +43,15 @@ class Bullet():
             self.sprite = pygame.image.load("pacman40.png").convert()
             self.sprite.set_colorkey((255,255,255))
             self.angle = 0
-    
+            
+        if(type1==5):
+            self.hitbox = hitbox
+            self.sprite = pygame.image.load("bullet4_40.png").convert()
+            self.sprite.set_colorkey((0,0,0))
+            self.angle = 0
+            self.timeout = 40
+            self.bullettype = 1
+            self.targeting = 1
     
     def move(self):
         
@@ -60,6 +72,11 @@ class Bullet():
             
         if(self.y > 720):
             return 1
+        self.time+=1
+        if(self.time==self.timeout):
+            
+            return 2
+            
         return 0
     
     def draw(self, screen):
@@ -68,4 +85,19 @@ class Bullet():
             self.angle = 0   
         screen.blit(pygame.transform.rotate(self.sprite, self.angle), [int(self.x), int(self.y)])
     
-
+    def shoot(self,bulletlist,player):
+    #hakeutuvia bullettei
+        print("hajoava ampuu")
+        if(self.targeting == 1):
+            
+            speedx1=player.x-self.x-25
+            speedy1=player.y-self.y-25
+            speedx=7*speedx1/(math.sqrt(speedx1*speedx1+speedy1*speedy1))
+            speedy=7*speedy1/(math.sqrt(speedx1*speedx1+speedy1*speedy1))
+        
+            bulletlist.append(Bullet(self.x+(self.hitbox[0][1]-self.hitbox[0][0])/2, self.y,speedx,speedy, [[0,40],[0,40]],self.bullettype))
+        else:
+            
+       
+            bulletlist.append(Bullet(self.x+((self.hitbox[0][1]-self.hitbox[0][0])/2), self.y,1,5, [[0,40],[0,40]],self.bullettype))
+            bulletlist.append(Bullet(self.x+((self.hitbox[0][1]-self.hitbox[0][0])/2), self.y,-1,5, [[0,40],[0,40]],self.bullettype))
