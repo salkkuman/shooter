@@ -21,7 +21,7 @@ class EnemyUnit():
         if(types==1):
             self.speed.y = 1
             self.hitbox=[0,40],[0,40]
-            self.sprite = pygame.image.load("enemy.png").convert()
+            self.sprite = pygame.image.load("../kuvat/enemy.png").convert()
             self.sprite.set_colorkey((255,0,255))
             self.timetoshoot = 0
             self.bulletype=3
@@ -29,7 +29,7 @@ class EnemyUnit():
             self.hitboxd=60
             self.speed.y = 0
             self.hitbox=[10,120],[0,140]
-            self.sprite = pygame.image.load("paivi150.png").convert()
+            self.sprite = pygame.image.load("../kuvat/paivi150.png").convert()
             self.sprite.set_colorkey((255,0,255))
             self.timetoshoot = 0
             self.hp = 10
@@ -38,7 +38,7 @@ class EnemyUnit():
             self.hitboxd=60
             self.speed.y = 0
             self.hitbox=[10,120],[0,140]
-            self.sprite = pygame.image.load("paivi150.png").convert()
+            self.sprite = pygame.image.load("../kuvat/paivi150.png").convert()
             self.sprite.set_colorkey((255,0,255))
             self.timetoshoot = 0
             self.hp = 10
@@ -47,7 +47,7 @@ class EnemyUnit():
 
             self.speed.__iadd__((0,1))
             self.hitbox=[0,50],[0,50]
-            self.sprite = pygame.image.load("pacman_ghost1.png").convert()
+            self.sprite = pygame.image.load("../kuvat/pacman_ghost1.png").convert()
             self.sprite.set_colorkey((0,0,0))
             self.timetoshoot = 0
             self.hp = 2
@@ -55,7 +55,7 @@ class EnemyUnit():
         if(types==4):
 
             self.hitbox=[0,50],[0,50]
-            self.sprite = pygame.image.load("pacman_ghost2.png").convert()
+            self.sprite = pygame.image.load("../kuvat/pacman_ghost2.png").convert()
             self.sprite.set_colorkey((0,0,0))
             self.timetoshoot = 0
             self.hp = 2
@@ -63,7 +63,7 @@ class EnemyUnit():
         if(types==5):
 
             self.hitbox=[0,50],[0,50]
-            self.sprite = pygame.image.load("pacman_ghost3.png").convert()
+            self.sprite = pygame.image.load("../kuvat/pacman_ghost3.png").convert()
             self.sprite.set_colorkey((0,0,0))
             self.timetoshoot = 0
             self.hp = 2
@@ -71,7 +71,7 @@ class EnemyUnit():
         if(types==6):
 
             self.hitbox=[0,50],[0,50]
-            self.sprite = pygame.image.load("pacman_ghost4.png").convert()
+            self.sprite = pygame.image.load("../kuvat/pacman_ghost4.png").convert()
             self.sprite.set_colorkey((0,0,0))
             self.timetoshoot = 0
             self.hp = 2

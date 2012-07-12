@@ -14,7 +14,7 @@ class Bullet():
         #list of hitboxes items are in form [[x1, x2], [y1,y2]]
         self.hitboxd=10
         self.hitbox = [[0,0],[20,20]]
-        self.sprite = pygame.image.load("kaitendama32.png").convert()
+        self.sprite = pygame.image.load("../kuvat/kaitendama32.png").convert()
         self.sprite.set_colorkey((0, 100, 100))
         self.rotate_angle = 0
         self.angle = 0
@@ -27,30 +27,30 @@ class Bullet():
         
         if(type1==1):
             
-            self.sprite = pygame.image.load("kaitendama32.png").convert()
+            self.sprite = pygame.image.load("../kuvat/kaitendama32.png").convert()
             self.sprite.set_colorkey((0, 100, 100))
             self.angle = 3
             self.rotate_angle = 32
         if(type1==2):
             
             #ympyra ratainen
-            self.sprite = pygame.image.load("bullet2.png").convert()
+            self.sprite = pygame.image.load("../kuvat/bullet2.png").convert()
             self.sprite.set_colorkey((255, 0, 255))
             self.angle = 0
             
         if(type1==3):
             
-            self.sprite = pygame.image.load("bullet3.png").convert()
+            self.sprite = pygame.image.load("../kuvat/bullet3.png").convert()
             self.sprite.set_colorkey((0,0,0))
             self.angle = 0
         if(type1==4):
             
-            self.sprite = pygame.image.load("pacman40.png").convert()
+            self.sprite = pygame.image.load("../kuvat/pacman40.png").convert()
             self.sprite.set_colorkey((255,255,255))
             self.angle = 0
             
         if(type1==5):   
-            self.sprite = pygame.image.load("bullet4_40.png").convert()
+            self.sprite = pygame.image.load("../kuvat/bullet4_40.png").convert()
             self.sprite.set_colorkey((0,0,0))
             self.angle = 0
             self.timeout = 40

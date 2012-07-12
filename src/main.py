@@ -5,6 +5,8 @@ import EnemyUnit
 import random
 import Ammo
 import Vector
+
+
 def collision(item1,item2):
     hitrange=item1.hitboxd+item2.hitboxd
     distance=Vector.Distance(item1.place, item2.place)
@@ -36,10 +38,10 @@ font = pygame.font.Font(None, 21)
 
 clock = pygame.time.Clock()
 # load images
-background_tile = pygame.image.load("tile.png").convert()
+background_tile = pygame.image.load("../kuvat/tile.png").convert()
 
 player = Player.Player()
-alus = pygame.image.load("alus.png").convert()
+alus = pygame.image.load("../kuvat/alus.png").convert()
 alus.set_colorkey(transparent)
 # This sets the width and height of each grid location in background
 marginX = 40
