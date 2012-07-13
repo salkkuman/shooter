@@ -7,15 +7,27 @@ import Ammo
 import Vector
 
 
-def collision(item1,item2):
-    hitrange=item1.hitboxd+item2.hitboxd
-    distance=Vector.Distance(item1.place, item2.place)
-    if(distance-hitrange<0):
+def collision(item1, item2):
+    hitrange = item1.hitboxd + item2.hitboxd
+    distance = Vector.Distance(item1.place, item2.place)
+    if(distance - hitrange < 0):
         return 1
     for hitbox in item1.hitbox:
         for hitbox in item2.hitbox:
-            1==1
+            1 == 1
     return 0
+
+def play_music(music_file):
+    clock2 = pygame.time.Clock()
+    try:
+        pygame.mixer.music.load(music_file)
+        print("Music file loaded!")
+    except pygame.error:
+        print ("File not found!")
+        return
+    pygame.mixer.music.play(0)
+    while pygame.mixer.music.get_busy():
+        clock2.tick(30)
     
     
 pygame.init()
@@ -29,6 +41,16 @@ yellow = (255, 255, 0)
 transparent = (255, 0, 255)
 pi = 3.141592653
 done = False
+
+music_file = "../bgm/istgp_track01.mp3"
+try:
+    pygame.mixer.music.load(music_file)
+    print("Music file loaded!")
+except pygame.error:
+    print ("File not found!")
+# optional volume 0 to 1.0
+pygame.mixer.music.set_volume(0.75)
+
 
 size = [1024, 720]
 screen = pygame.display.set_mode(size)
@@ -67,9 +89,10 @@ keystate_down = False
 speedx = 0
 speedy = 0
 mov_speed = 3 #default movement speed
-menudone = True
+menudone = False
 mainmenu = 0
 menuclock = pygame.time.Clock()
+music_playing = 0
 
 menu0 = font.render('Start Game', True, (white), (black))
 menu1 = font.render('Extra', True, (white), (black))
@@ -111,7 +134,6 @@ while done == False:
                     done = True 
                     
         screen.fill(black)
-        
         pygame.draw.circle(screen, white, (460, menuy), 5, 0)
     # Create a rectangle
         menuRect0 = menu0.get_rect()
@@ -140,6 +162,10 @@ while done == False:
         pygame.display.flip()
         menuclock.tick(10)
     
+    if music_playing == 0:
+        pygame.mixer.music.play(-1)
+        music_playing = 1
+    
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_1:
             player.movespeed(1)
@@ -161,6 +187,9 @@ while done == False:
             player.movespeed(9)
         if event.key == pygame.K_ESCAPE:
             menudone = False
+            pygame.mixer.music.stop()
+            music_playing = 0
+            
     #uus inputkoodi alku
     key = pygame.key.get_pressed()
     
@@ -291,7 +320,7 @@ while done == False:
     for enemy in enemylist:
         enemy.shoot(bulletlist, player)
         enemy.time()
-        if(collision(player,enemy)):
+        if(collision(player, enemy)):
             hit = 1
         
         if (hit == 1):    
@@ -312,7 +341,7 @@ while done == False:
         else:
             ammolist.remove(ammo)
         for enemy in enemylist:
-            if(collision(ammo,enemy)):
+            if(collision(ammo, enemy)):
                 
                 if(enemy.hit()):
                     
@@ -324,11 +353,11 @@ while done == False:
 
     for bullet in bulletlist:
         pygame.draw.line(screen, white, [bullet.place.x, bullet.place.y], [bullet.place.x + bullet.speed.x, bullet.place.y + bullet.speed.y])
-        if(collision(player,bullet)):
+        if(collision(player, bullet)):
             hit = 1
-        moved=bullet.move()
+        moved = bullet.move()
         if(moved):
-            if(moved==2):
+            if(moved == 2):
                 bullet.shoot(bulletlist, player)
             bulletlist.remove(bullet)
         else:
@@ -345,7 +374,7 @@ while done == False:
     
     for enemy in enemylist:
         
-        if(collision(player,enemy)):
+        if(collision(player, enemy)):
             hit = 1
         if (hit == 1):    
             bulletlist = []
