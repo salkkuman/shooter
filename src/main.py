@@ -32,6 +32,8 @@ def play_music(music_file):
     
 pygame.init()
 
+
+#init color
 black = (0, 0, 0)
 white = (255, 255, 255)
 green = (0, 255, 0)
@@ -64,7 +66,7 @@ clock = pygame.time.Clock()
 background_tile = pygame.image.load("../kuvat/tile.png").convert()
 
 player = Player.Player()
-alus = pygame.image.load("../kuvat/alus.png").convert()
+alus = pygame.image.load("../kuvat/temp_hahmo.png").convert()
 alus.set_colorkey(transparent)
 # This sets the width and height of each grid location in background
 marginX = 40
@@ -76,7 +78,7 @@ height = 40
 gameEvent = Event.Event()
 hit = 0
 bestscore = 0
-pygame.display.set_caption("Herpderpsburdoborde:DDDDDD:D by Hermanni")
+pygame.display.set_caption("---")
 iteration = 0
 bulletlist = []
 enemylist = []
