@@ -5,7 +5,8 @@ import EnemyUnit
 import random
 import Ammo
 import Vector
-
+import HighScore
+import Merge
 
 def collision(item1, item2):
     hitrange = item1.hitboxd + item2.hitboxd
@@ -29,11 +30,17 @@ def play_music(music_file):
     while pygame.mixer.music.get_busy():
         clock2.tick(30)
     
+def save(highscorelist):
+    f = open('../config/highscore', 'a')
     
+    #Merge.mergesort(highscorelist)
+    for score in highscorelist:
+        f.write(str(score.score))
+        f.write(' ')
+        f.write(score.name)
+        f.write('\n')
 pygame.init()
 
-
-#init color
 black = (0, 0, 0)
 white = (255, 255, 255)
 green = (0, 255, 0)
@@ -66,7 +73,7 @@ clock = pygame.time.Clock()
 background_tile = pygame.image.load("../kuvat/tile.png").convert()
 
 player = Player.Player()
-alus = pygame.image.load("../kuvat/temp_hahmo.png").convert()
+alus = pygame.image.load("../kuvat/alus.png").convert()
 alus.set_colorkey(transparent)
 # This sets the width and height of each grid location in background
 marginX = 40
@@ -78,11 +85,12 @@ height = 40
 gameEvent = Event.Event()
 hit = 0
 bestscore = 0
-pygame.display.set_caption("---")
+pygame.display.set_caption("Herpderpsburdoborde:DDDDDD:D by Hermanni")
 iteration = 0
 bulletlist = []
 enemylist = []
 ammolist = []
+highscorelist = []
 score = 0
 keystate_left = False
 keystate_right = False
@@ -365,6 +373,7 @@ while done == False:
         else:
             bullet.draw(screen)
         if (hit == 1):    
+            highscorelist.append(HighScore.HighScore(score, player.name))
             bulletlist = []
             enemylist = []
             player.reset()
@@ -372,7 +381,7 @@ while done == False:
             score = 0
             hit = 0
             gameEvent.reset()
-    
+            break
     
     for enemy in enemylist:
         
@@ -434,4 +443,5 @@ while done == False:
     
     pygame.display.flip()    
     clock.tick(60)
+save(highscorelist)
 pygame.quit()

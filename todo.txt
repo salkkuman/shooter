@@ -1,5 +1,0 @@
-korjaa loopit
-show fps
-boosti/slow nappi
-config filu
-menu
