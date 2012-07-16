@@ -59,7 +59,7 @@ try:
 except pygame.error:
     print ("File not found!")
 # optional volume 0 to 1.0
-pygame.mixer.music.set_volume(0.75)
+pygame.mixer.music.set_volume(0.85)
 
 
 size = [1024, 720]
@@ -74,8 +74,7 @@ clock = pygame.time.Clock()
 background_tile = pygame.image.load("../kuvat/tile.png").convert()
 
 player = Player.Player()
-alus = pygame.image.load("../kuvat/alus.png").convert()
-alus.set_colorkey(transparent)
+
 # This sets the width and height of each grid location in background
 marginX = 40
 marginY = 40
@@ -102,15 +101,31 @@ speedy = 0
 mov_speed = 3 #default movement speed
 menudone = False
 mainmenu = 0
+menu_state = 0 #0 = mainmenu, 1 = character select, 2 = stage select, 3 = extra, 4 = settings, 5 = highscore
 menuclock = pygame.time.Clock()
 music_playing = 0
+character_select = False
+character_selected = 0 #0 = punanen hahmo, 1 = sininen, 2 = vihree
+stage_select = 0
 
 menu0 = font.render('Start Game', True, (white), (black))
 menu1 = font.render('Extra', True, (white), (black))
 menu2 = font.render('Settings', True, (white), (black))
 menu3 = font.render('Highscore', True, (white), (black))
 menu4 = font.render('Quit', True, (white), (black))   
-menuy = 220     
+menuy = 220
+hahmomenuy = 233
+
+hahmo0 = font.render('Hahmo 1    Power: 1 Speed: 3', True, (white), (black))
+hahmo1 = font.render('Hahmo 2    Power: 1 Speed: 6', True, (white), (black))
+hahmo2 = font.render('Hahmo 3    Power: 1 Speed: 9', True, (white), (black))
+
+hahmosprite0 = pygame.image.load("../kuvat/temp_hahmo.png").convert()
+hahmosprite0.set_colorkey(transparent)
+hahmosprite1 = pygame.image.load("../kuvat/temp_hahmo2.png").convert()
+hahmosprite1.set_colorkey(transparent)
+hahmosprite2 = pygame.image.load("../kuvat/temp_hahmo3.png").convert()
+hahmosprite2.set_colorkey(transparent)
 
 while done == False:
     for event in pygame.event.get():
@@ -121,61 +136,121 @@ while done == False:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 menudone = True
-                done = True        
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
-                if mainmenu < 4:
-                    mainmenu += 1
-                    menuy += 20
-            if event.key == pygame.K_UP:
-                if mainmenu > 0:
-                    mainmenu -= 1
-                    menuy -= 20
-            if event.key == pygame.K_RETURN:
-                if mainmenu == 0:
-                    menudone = True
-                    #peli alkaa
-                    #todo: stage select
-                if mainmenu == 1:
-                    print("Extra Mode")
+                done = True
+        if menu_state == 0:
+            #pahoittelut, HIRVEETA MENU-KOODIA EDESSA:
+            #TODO: fiksumpi menu logiikka, kaikki keyinputtie luku samaa blokkiin koodia
+#------------------------MAINMENU-------------------------------------               
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    if mainmenu < 4:
+                        mainmenu += 1
+                        menuy += 20
+                if event.key == pygame.K_UP:
+                    if mainmenu > 0:
+                        mainmenu -= 1
+                        menuy -= 20
+                if event.key == pygame.K_RETURN:
+                    if mainmenu == 0:
+                        #menudone = True
+                        menu_state = 1
+                        #characterselectiin
+                        #todo: stage select
+                    if mainmenu == 1:
+                        print("Extra Mode")
                     #todo: toinen peli moodi
-                if mainmenu == 2:
-                    print("Settings")
+                    if mainmenu == 2:
+                        print("Settings")
                     #todo: settings valikko
-                if mainmenu == 3:
-                    print("Highscore");
+                    if mainmenu == 3:
+                        print("Highscore");
                     #todo: highscore list
-                if mainmenu == 4:
-                    menudone = True
-                    done = True 
+                    if mainmenu == 4:
+                        menudone = True
+                        done = True 
                     #quit
                     
-        screen.fill(black)
-        pygame.draw.circle(screen, white, (460, menuy), 5, 0)
+            screen.fill(black)
+            pygame.draw.circle(screen, white, (460, menuy), 5, 0)
+        
+        
     # menu valikot. todo: kunnon grafiikat menuun
-        menuRect0 = menu0.get_rect()
-        menuRect1 = menu1.get_rect()
-        menuRect2 = menu2.get_rect()
-        menuRect3 = menu3.get_rect()
-        menuRect4 = menu4.get_rect()
+            menuRect0 = menu0.get_rect()
+            menuRect1 = menu1.get_rect()
+            menuRect2 = menu2.get_rect()
+            menuRect3 = menu3.get_rect()
+            menuRect4 = menu4.get_rect()
     # menu tekstien positiot
-        menuRect4.centerx = 511
-        menuRect4.centery = 300
-        menuRect3.centerx = 511
-        menuRect3.centery = 280
-        menuRect2.centerx = 511
-        menuRect2.centery = 260
-        menuRect1.centerx = 511
-        menuRect1.centery = 240
-        menuRect0.centerx = 511
-        menuRect0.centery = 220
+            menuRect4.centerx = 511
+            menuRect4.centery = 300
+            menuRect3.centerx = 511
+            menuRect3.centery = 280
+            menuRect2.centerx = 511
+            menuRect2.centery = 260
+            menuRect1.centerx = 511
+            menuRect1.centery = 240
+            menuRect0.centerx = 511
+            menuRect0.centery = 220
     # piirra menuttekstit ruudulle
-        screen.blit(menu0, menuRect0)
-        screen.blit(menu1, menuRect1)
-        screen.blit(menu2, menuRect2)            
-        screen.blit(menu3, menuRect3)
-        screen.blit(menu4, menuRect4)
+            screen.blit(menu0, menuRect0)
+            screen.blit(menu1, menuRect1)
+            screen.blit(menu2, menuRect2)            
+            screen.blit(menu3, menuRect3)
+            screen.blit(menu4, menuRect4)
+#------------------------//MAINMENU-----------------------------------            
+            
+#------------------------CHARACTER SELECT-----------------------------
+        if menu_state == 1:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    if character_selected < 2:
+                        character_selected += 1
+                        hahmomenuy += 100
+                if event.key == pygame.K_UP:
+                    if character_selected > 0:
+                        character_selected -= 1
+                        hahmomenuy -= 100
+                if event.key == pygame.K_RETURN:
+                    character_select = True
+                    stage_select = 1
+                    menu_state = 0
+                    menudone = True
+                    if character_selected == 0:
+                        alus = pygame.image.load("../kuvat/temp_hahmo.png").convert()
+                        player.movespeed(3)
+                    elif character_selected == 1:
+                        alus = pygame.image.load("../kuvat/temp_hahmo2.png").convert()
+                        player.movespeed(6)
+                    elif character_selected == 2:
+                        alus = pygame.image.load("../kuvat/temp_hahmo3.png").convert()
+                        player.movespeed(9)
+                    alus.set_colorkey(transparent)
                     
+            screen.fill(black)
+            pygame.draw.circle(screen, white, (180, hahmomenuy), 5, 0)
+        
+    # menu valikot. todo: kunnon grafiikat menuun
+    
+            screen.blit(hahmosprite0, [200, 200])
+            screen.blit(hahmosprite1, [200, 300])
+            screen.blit(hahmosprite2, [200, 400])
+            
+            hahmoRect0 = hahmo0.get_rect()
+            hahmoRect1 = hahmo1.get_rect()
+            hahmoRect2 = hahmo2.get_rect()
+            hahmoRect0.centerx = 400
+            hahmoRect0.centery = 230
+            hahmoRect1.centerx = 400
+            hahmoRect1.centery = 330
+            hahmoRect2.centerx = 400
+            hahmoRect2.centery = 430
+            screen.blit(hahmo0, hahmoRect0)
+            screen.blit(hahmo1, hahmoRect1)
+            screen.blit(hahmo2, hahmoRect2)
+#------------------------//CHARACTER SELECT---------------------------
+#------------------------STAGE SELECT---------------------------------
+                            #todo
+#------------------------//STAGE SELECT-------------------------------
         pygame.display.flip()
         # 10 fps valikossa koska huono input handler liian nopea muuten
         # todo: vaihtaa menun input code liikkumaan valikossa vaan state changesta, ei pohjassa painamisesta
@@ -208,6 +283,7 @@ while done == False:
         if event.key == pygame.K_ESCAPE:
             #todo: pausemenu, jossa resume, restart ja quit to main menu. Main menuun menemisen pitaisi resetoida peli myos
             menudone = False
+            menu_state = 0
             pygame.mixer.music.stop()
             music_playing = 0
             
