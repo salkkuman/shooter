@@ -39,6 +39,7 @@ def save(highscorelist):
         f.write(' ')
         f.write(score.name)
         f.write('\n')
+
 pygame.init()
 
 black = (0, 0, 0)
@@ -85,7 +86,7 @@ height = 40
 gameEvent = Event.Event()
 hit = 0
 bestscore = 0
-pygame.display.set_caption("Herpderpsburdoborde:DDDDDD:D by Hermanni")
+pygame.display.set_caption("istg")
 iteration = 0
 bulletlist = []
 enemylist = []
@@ -133,25 +134,31 @@ while done == False:
             if event.key == pygame.K_RETURN:
                 if mainmenu == 0:
                     menudone = True
+                    #peli alkaa
+                    #todo: stage select
                 if mainmenu == 1:
                     print("Extra Mode")
+                    #todo: toinen peli moodi
                 if mainmenu == 2:
                     print("Settings")
+                    #todo: settings valikko
                 if mainmenu == 3:
                     print("Highscore");
+                    #todo: highscore list
                 if mainmenu == 4:
                     menudone = True
                     done = True 
+                    #quit
                     
         screen.fill(black)
         pygame.draw.circle(screen, white, (460, menuy), 5, 0)
-    # Create a rectangle
+    # menu valikot. todo: kunnon grafiikat menuun
         menuRect0 = menu0.get_rect()
         menuRect1 = menu1.get_rect()
         menuRect2 = menu2.get_rect()
         menuRect3 = menu3.get_rect()
         menuRect4 = menu4.get_rect()
-    # Center the rectangle
+    # menu tekstien positiot
         menuRect4.centerx = 511
         menuRect4.centery = 300
         menuRect3.centerx = 511
@@ -162,7 +169,7 @@ while done == False:
         menuRect1.centery = 240
         menuRect0.centerx = 511
         menuRect0.centery = 220
-    # Blit the text
+    # piirra menuttekstit ruudulle
         screen.blit(menu0, menuRect0)
         screen.blit(menu1, menuRect1)
         screen.blit(menu2, menuRect2)            
@@ -170,12 +177,15 @@ while done == False:
         screen.blit(menu4, menuRect4)
                     
         pygame.display.flip()
+        # 10 fps valikossa koska huono input handler liian nopea muuten
+        # todo: vaihtaa menun input code liikkumaan valikossa vaan state changesta, ei pohjassa painamisesta
         menuclock.tick(10)
     
     if music_playing == 0:
         pygame.mixer.music.play(-1)
         music_playing = 1
     
+    # temp: vaihtaa hahmon nopeutta 1-9 
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_1:
             player.movespeed(1)
@@ -196,13 +206,14 @@ while done == False:
         if event.key == pygame.K_9:
             player.movespeed(9)
         if event.key == pygame.K_ESCAPE:
+            #todo: pausemenu, jossa resume, restart ja quit to main menu. Main menuun menemisen pitaisi resetoida peli myos
             menudone = False
             pygame.mixer.music.stop()
             music_playing = 0
             
-    #uus inputkoodi alku
+    #pelin hahmon inputhandler
+    #todo: nappeja skilleille, joissa cooldown
     key = pygame.key.get_pressed()
-    
     if keystate_left == False:
         if key[pygame.K_LEFT]:
             keystate_left = True
@@ -219,9 +230,6 @@ while done == False:
         if key[pygame.K_DOWN]:
             keystate_down = True
             player.changespeedY(1)
-
-        
-        
     if keystate_left == True:
         if key[pygame.K_LEFT] == False:
             keystate_left = False
@@ -229,7 +237,6 @@ while done == False:
                 player.changespeedX(0)
             else:
                 player.changespeedX(1)
-                
     if keystate_right == True:
         if key[pygame.K_RIGHT] == False:
             keystate_right = False
@@ -237,7 +244,6 @@ while done == False:
                 player.changespeedX(0)
             else:
                 player.changespeedX(-1)
-            
     if keystate_up == True:
         if key[pygame.K_UP] == False:
             keystate_up = False         
@@ -245,8 +251,6 @@ while done == False:
                 player.changespeedY(0)
             else:
                 player.changespeedY(1)
-                
-                
     if keystate_down == True:
         if key[pygame.K_DOWN] == False:
             keystate_down = False
@@ -254,14 +258,13 @@ while done == False:
                 player.changespeedY(0)
             else:
                 player.changespeedY(-1)
-                
-    #uus inputcode loppu
     
                
     screen.fill(black)
-    
-    pygame.draw.line(screen, transparent, [768, 0], [768, 767], 10) #sivupalkki
-    
+    #sivupalkki
+    #todo: kunnon sivupalkit + grafiikat
+    pygame.draw.line(screen, transparent, [768, 0], [768, 767], 10)
+
     
     #backroundArea = screen.subsurface((0,200,0,200))
     #backroundArea.fill(blue)
@@ -276,7 +279,6 @@ while done == False:
     
         
     #draw player and move player
-    
     player.move()
     screen.blit(alus, [player.place.x - 35, player.place.y - 70])
     pygame.draw.circle(screen, red, (int(player.place.x), int(player.place.y)), 7, 0)
@@ -286,14 +288,14 @@ while done == False:
     if(iteration % 15 == 0):
         ammolist.append(Ammo.Ammo(player.place))
     
-    #saatana nousee 
+    #saatana nousee -- salama: vahemman kryptiset kommentit plz
     if(gameEvent.event == 1):
         if(iteration == 20):
             gameEvent.trigger = 1
         if(iteration == 20):
             enemylist.append(EnemyUnit.EnemyUnit(300, 300, 7))
     
-     #saatana nousee haudasta
+    #saatana nousee haudasta -- salama: vahemman kryptiset kommentit plz
     if(gameEvent.event == 2):
         if(iteration == 20):
             gameEvent.trigger = 1
@@ -326,7 +328,7 @@ while done == False:
             enemylist.append(EnemyUnit.EnemyUnit(random.randint(40, 720), 0, 1))
    
         
-    
+    #vihollisten logiikka
     for enemy in enemylist:
         enemy.shoot(bulletlist, player)
         enemy.time()
@@ -360,7 +362,8 @@ while done == False:
                 score += 100
             else:
                 enemy.draw(screen)
-
+                
+    
     for bullet in bulletlist:
         pygame.draw.line(screen, white, [bullet.place.x, bullet.place.y], [bullet.place.x + bullet.speed.x, bullet.place.y + bullet.speed.y])
         if(collision(player, bullet)):
@@ -416,11 +419,10 @@ while done == False:
     text1 = font.render('Current Score' + str(score), True, (white), (black))
     fps = int(clock.get_fps())
     text2 = font.render('FPS:' + str(fps), True, (white), (black))
-    # Create a rectangle
+    # sidebar tekstit
     textRect = text.get_rect()
     textRect1 = text1.get_rect()
     textRect2 = text2.get_rect()
-    # Center the rectangle
     textRect.centerx = 900
     textRect.centery = 200
     textRect1.centerx = 900
