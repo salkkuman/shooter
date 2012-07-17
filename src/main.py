@@ -106,7 +106,6 @@ menuclock = pygame.time.Clock()
 music_playing = 0
 character_select = False
 character_selected = 0 #0 = punanen hahmo, 1 = sininen, 2 = vihree
-stage_select = 0
 menu_button_down = False
 
 menu0 = font.render('Start Game', True, (white), (black))
@@ -116,6 +115,13 @@ menu3 = font.render('Highscore', True, (white), (black))
 menu4 = font.render('Quit', True, (white), (black))   
 menuy = 220
 hahmomenuy = 233
+stagemenuy = 200
+stage_selected = 1
+substage1 = 1
+substage2 = 1
+substage3 = 1
+substage4 = 1
+substage5 = 1
 
 hahmo0 = font.render('Hahmo 1    Power: 1 Speed: 3', True, (white), (black))
 hahmo1 = font.render('Hahmo 2    Power: 1 Speed: 6', True, (white), (black))
@@ -221,9 +227,8 @@ while done == False:
                             menu_button_down = True
                     if event.key == pygame.K_RETURN:
                         character_select = True
-                        stage_select = 1
-                        menu_state = 0
-                        menudone = True
+                        menu_button_down = True
+                        menu_state = 2
                         if character_selected == 0:
                             alus = pygame.image.load("../kuvat/temp_hahmo.png").convert()
                             player.movespeed(3)
@@ -259,13 +264,39 @@ while done == False:
             screen.blit(hahmo1, hahmoRect1)
             screen.blit(hahmo2, hahmoRect2)
 #------------------------//CHARACTER SELECT---------------------------
+        
 #------------------------STAGE SELECT---------------------------------
-                            #todo
+        if menu_state == 2:
+            if event.type == pygame.KEYDOWN:
+                if menu_button_down == False:
+                    if event.key == pygame.K_DOWN:
+                        if stage_selected < 6:
+                            stage_selected += 1
+                            stagemenuy += 100
+                            menu_button_down = True
+                    if event.key == pygame.K_UP:
+                        if stage_selected > 0:
+                            stage_selected -= 1
+                            stagemenuy -= 100
+                            menu_button_down = True
+                    if event.key == pygame.K_RETURN:
+                        menudone = True
+                        menu_button_down = True
+                        menu_state = 0
+            if event.type == pygame.KEYUP:
+                menu_button_down = False
+            #stageselect piirto
+            #TODO: hienompi stage select    
+            screen.fill(black)
+            pygame.draw.circle(screen, white, (180, stagemenuy), 5, 0)
+            
 #------------------------//STAGE SELECT-------------------------------
         pygame.display.flip()
-        # 10 fps valikossa koska huono input handler liian nopea muuten
-        # todo: vaihtaa menun input code liikkumaan valikossa vaan state changesta, ei pohjassa painamisesta
         menuclock.tick(60)
+    
+#-------------------------//MENU--------------------------------------
+    
+#------------------------MAIN PELI LOOP-------------------------------   
     
     if music_playing == 0:
         pygame.mixer.music.play(-1)
